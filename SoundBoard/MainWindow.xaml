@@ -28,20 +28,20 @@
             <TextBox x:Name="DirectoryTbox" Text="{Binding DirectoryPath, Mode=TwoWay}" Grid.Row="0" Grid.Column="0" Margin="5" VerticalContentAlignment="Center" FontSize="15" IsReadOnly="True"/>
         </GroupBox>
 
-        <Button x:Name="LoadDirBtn" Grid.Row="0" Grid.Column="1" Margin="20" Content="Load Sound Directory" FontSize="25"/>
+        <Button x:Name="LoadDirBtn" Grid.Row="0" Grid.Column="1" Margin="20" Content="Load Sound Directory" FontSize="25" Click="LoadDirBtn_Click"/>
         <GroupBox Grid.Row="1" Grid.Column="0"  Margin="0,0,0,15" BorderThickness="0">
             <GroupBox.Header>
                 <Label Foreground="White">First Out Device</Label>
             </GroupBox.Header>
-            <ComboBox x:Name="FirstDeviceCbox" DisplayMemberPath="Description"  Margin="5" FontSize="15" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="FirstDeviceCbox" ItemsSource="{Binding SoundOutDevices, Mode=TwoWay}" DisplayMemberPath="Description"  Margin="5" FontSize="15" VerticalContentAlignment="Center" SelectionChanged="FirstDeviceCbox_SelectionChanged"/>
         </GroupBox>
 
-        <Button x:Name="RefreshDevicesBtn" Grid.Row="1" Grid.Column="1" Margin="20" Content="Refresh Out Devices" FontSize="25"/>
+        <Button x:Name="RefreshDevicesBtn" Grid.Row="1" Grid.Column="1" Margin="20" Content="Refresh Out Devices" FontSize="25" Click="RefreshDevicesBtn_Click"/>
         <GroupBox Grid.Row="2" Grid.Column="0" Margin="0,0,0,15" BorderThickness="0">
             <GroupBox.Header>
                 <Label Foreground="White">Second Out Device</Label>
             </GroupBox.Header>
-            <ComboBox x:Name="SecondDeviceCbox"  DisplayMemberPath="Description" Grid.Row="2" Grid.Column="0" Margin="5" FontSize="15" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="SecondDeviceCbox" ItemsSource="{Binding SoundOutDevices, Mode=TwoWay}"  DisplayMemberPath="Description" Grid.Row="2" Grid.Column="0" Margin="5" FontSize="15" VerticalContentAlignment="Center" SelectionChanged="SecondDeviceCbox_SelectionChanged"/>
         </GroupBox>
         <Button x:Name="StopSoundBtn" Grid.Row="2" Grid.Column="1" Margin="20" Content="Stop All Sounds" FontSize="25"/>
         <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">

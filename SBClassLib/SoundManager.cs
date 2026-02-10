@@ -100,7 +100,7 @@ namespace SBClassLib
 
         public string?[] ShowCurrentDevicesDescriptions()
         {
-            return [_firstOutDevice.Description, _secondOutDevice.Description];
+            return [_firstOutDevice.Description, _secondOutDevice != null ? _secondOutDevice.Description : null];
         }
 
         public DirectSoundDeviceInfo?[] GetCurrentDevices()

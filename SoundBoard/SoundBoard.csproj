@@ -27,4 +27,13 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestDir\gerson-laugh.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestDir\gerson-laugh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

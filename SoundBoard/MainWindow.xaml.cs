@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using NAudio.Wave;
 using SBClassLib;
 
@@ -17,15 +20,17 @@ namespace SoundBoard
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private SoundManager _manager;
         public string DirectoryPath { get; set; }
         public ObservableCollection<DirectSoundDeviceInfo> SoundOutDevices { get; set; }
 
         public MainWindow()
         {
-
+            DirectoryPath = "";
+            SoundOutDevices = new();
             _manager = new SoundManager();
             InitializeComponent();
             this.DataContext = this;
@@ -37,11 +42,49 @@ namespace SoundBoard
         private void LoadDevices()
         {
             SoundOutDevices = new ObservableCollection<DirectSoundDeviceInfo>(SoundManager.GetOutDevices());
-            FirstDeviceCbox.ItemsSource = SoundOutDevices;
-            SecondDeviceCbox.ItemsSource = SoundOutDevices;
+            DirectSoundDeviceInfo?[] devices = _manager.GetCurrentDevices();
+            FirstDeviceCbox.SelectedItem = devices[0] != null ? SoundOutDevices.FirstOrDefault(d => d.Guid == devices[0]!.Guid) : null;
+            SecondDeviceCbox.SelectedItem = devices[1] != null ? SoundOutDevices.FirstOrDefault(d => d.Guid == devices[1]!.Guid) : null;
+        }
+        private void LoadDirBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog ofd = new OpenFolderDialog();
+            ofd.InitialDirectory = AppContext.BaseDirectory;
+            if(ofd.ShowDialog() == true)
+            {
+                DirectoryPath = ofd.FolderName;
+                _manager.ChangeDirectory(DirectoryPath);
+            }
+            OnPropertyChanged("DirectoryPath");
+        }
 
+        private void RefreshDevicesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            LoadDevices();
+        }
 
+        private void FirstDeviceCbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FirstDeviceCbox.SelectedItem != null)
+            {
+                _manager.ChangeDevice(((DirectSoundDeviceInfo)FirstDeviceCbox.SelectedItem).Guid);
+            }
 
         }
+
+        private void SecondDeviceCbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(SecondDeviceCbox.SelectedItem != null)
+            {
+                _manager.ChangeDevice(((DirectSoundDeviceInfo)SecondDeviceCbox.SelectedItem).Guid, true);
+            }
+        }
+
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
     }
 }

@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestDirEmpty\Non.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestDir\gerson-laugh.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

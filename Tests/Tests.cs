@@ -23,6 +23,13 @@ namespace Tests
                 {
                     manager.PlaySound(id);
                 }
+                else
+                {
+                    if(inp == "s")
+                    {
+                        manager.StopAll();
+                    }
+                }
                 Console.Clear();
             }
 

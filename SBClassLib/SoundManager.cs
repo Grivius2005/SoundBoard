@@ -80,14 +80,16 @@ namespace SBClassLib
             string sfilePath = Sounds[index][0];
             using (var audioFile = new AudioFileReader(sfilePath))
             {
-                using(var outDeviceFirst = new DirectSoundOut(_firstOutDevice.Guid))
+                using (var outDeviceFirst = new DirectSoundOut(_firstOutDevice.Guid))
                 {
                     outDeviceFirst.Init(audioFile);
                     outDeviceFirst.Play();
                 }
 ;
-
-                if(_secondOutDevice != null)
+            }
+            if(_secondOutDevice != null)
+            {
+                using (var audioFile = new AudioFileReader(sfilePath))
                 {
                     using (var outDeviceSecond = new DirectSoundOut(_secondOutDevice.Guid))
                     {
@@ -95,8 +97,8 @@ namespace SBClassLib
                         outDeviceSecond.Play();
                     }
                 }
-
             }
+            
         }
 
 

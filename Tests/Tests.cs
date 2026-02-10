@@ -10,7 +10,11 @@ namespace Tests
         static void Main(string[] args)
         {
             SoundManager manager = new(FILEDIR);
-            manager.ChangeDevice("CABLE Input (VB-Audio Virtual Cable)", true);
+            foreach(var device in SoundManager.GetOutDevices())
+            {
+                Console.WriteLine(device.Description);
+            }
+            manager.ChangeDevice("CABLE In 16ch (VB-Audio Virtual Cable)", true);
             while (true)
             {
                 Console.Write("Wybierz indeks dźwięku: ");

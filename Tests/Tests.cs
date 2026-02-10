@@ -10,14 +10,17 @@ namespace Tests
         static void Main(string[] args)
         {
             SoundManager manager = new(FILEDIR);
-
-
-            foreach(string[] files in manager.Sounds)
+            manager.ChangeDevice("CABLE Input (VB-Audio Virtual Cable)", true);
+            while (true)
             {
-                Console.WriteLine($"{files[0]}\n{files[1]}");
-                Console.WriteLine();
+                Console.Write("Wybierz indeks dźwięku: ");
+                string? inp = Console.ReadLine();
+                if(int.TryParse(inp, out int id))
+                {
+                    manager.PlaySound(id);
+                }
+                Console.Clear();
             }
-
 
 
         }

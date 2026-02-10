@@ -29,9 +29,9 @@ namespace SoundBoard
 
         public MainWindow()
         {
-            DirectoryPath = "";
+            DirectoryPath = AppContext.BaseDirectory + @"TestDir";
             SoundOutDevices = new();
-            _manager = new SoundManager();
+            _manager = new SoundManager(DirectoryPath);
             InitializeComponent();
             this.DataContext = this;
             LoadDevices();
@@ -49,7 +49,7 @@ namespace SoundBoard
         private void LoadDirBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFolderDialog ofd = new OpenFolderDialog();
-            ofd.InitialDirectory = AppContext.BaseDirectory;
+            ofd.InitialDirectory = DirectoryPath;
             if(ofd.ShowDialog() == true)
             {
                 DirectoryPath = ofd.FolderName;
@@ -61,6 +61,11 @@ namespace SoundBoard
         private void RefreshDevicesBtn_Click(object sender, RoutedEventArgs e)
         {
             LoadDevices();
+        }
+
+        private void StopSoundBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _manager.StopAll();
         }
 
         private void FirstDeviceCbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -85,6 +90,7 @@ namespace SoundBoard
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
 
     }
 }

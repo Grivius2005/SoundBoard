@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -22,7 +24,7 @@ namespace SoundBoard
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         private SoundManager _manager;
         public string DirectoryPath { get; set; }
         public ObservableCollection<DirectSoundDeviceInfo> SoundOutDevices { get; set; }
@@ -35,6 +37,7 @@ namespace SoundBoard
             InitializeComponent();
             this.DataContext = this;
             LoadDevices();
+            LoadSounds();
         }
 
 
@@ -46,6 +49,51 @@ namespace SoundBoard
             FirstDeviceCbox.SelectedItem = devices[0] != null ? SoundOutDevices.FirstOrDefault(d => d.Guid == devices[0]!.Guid) : null;
             SecondDeviceCbox.SelectedItem = devices[1] != null ? SoundOutDevices.FirstOrDefault(d => d.Guid == devices[1]!.Guid) : null;
         }
+
+        private void LoadSounds()
+        {
+            SoundsSPanel.Children.Clear();
+            List<string?[]> sounds = _manager.Sounds;
+            for(int i=0; i < sounds.Count; i++)
+            {
+
+                int icopy = i;
+                var button = new Button
+                {
+                    Width = 150,
+                    Height = 150,
+                    Margin = new Thickness(15),
+                };
+                if (sounds[i][1] != null)
+                {
+                    Task.Run(() =>
+                    {
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.UriSource = new Uri(sounds[icopy][1]);
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.DecodePixelWidth = 200;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+
+                        Dispatcher.Invoke(() => 
+                        { 
+                            var img = new  ImageBrush(bitmap);
+                            button.Background = img; 
+                        });
+
+                    });
+                }
+                else
+                {
+                    button.Content = System.IO.Path.GetFileNameWithoutExtension(sounds[i][0]);
+                }
+
+                button.Click += (object sender, RoutedEventArgs arg) => { _manager.PlaySound(icopy); };
+                SoundsSPanel.Children.Add(button);
+            }
+        }
+
         private void LoadDirBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFolderDialog ofd = new OpenFolderDialog();
@@ -56,6 +104,7 @@ namespace SoundBoard
                 _manager.ChangeDirectory(DirectoryPath);
             }
             OnPropertyChanged("DirectoryPath");
+            LoadSounds();
         }
 
         private void RefreshDevicesBtn_Click(object sender, RoutedEventArgs e)
@@ -86,7 +135,7 @@ namespace SoundBoard
         }
 
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected void OnPropertyChanged([CallerMemberName] string? name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }

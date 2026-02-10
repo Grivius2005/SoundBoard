@@ -45,17 +45,9 @@
         </GroupBox>
         <Button x:Name="StopSoundBtn" Grid.Row="2" Grid.Column="1" Margin="20" Content="Stop All Sounds" FontSize="25" Click="StopSoundBtn_Click"/>
         <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+            <StackPanel x:Name="SoundsSPanel" Orientation="Horizontal" VerticalAlignment="Top" Margin="15">
                 
-            </Grid>
+            </StackPanel>
         </ScrollViewer>
 
     </Grid>

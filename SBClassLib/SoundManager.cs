@@ -103,10 +103,19 @@ namespace SBClassLib
             return [_firstOutDevice.Description, _secondOutDevice.Description];
         }
 
+        public DirectSoundDeviceInfo?[] GetCurrentDevices()
+        {
+            return [_firstOutDevice, _secondOutDevice];
+        }
+
         //--------------------
         //Sound managing
         public void PlaySound(int index)
         {
+            if (DirectoryPath == null)
+            {
+                throw new Exception("No directory selected");
+            }
             if (index >= Sounds.Count)
             {
                 throw new Exception("Sound index out of range");

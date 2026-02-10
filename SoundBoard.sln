@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBClassLib", "SBClassLib\SBClassLib.csproj", "{11E9DEB9-087F-4B23-99A9-393DC98663F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBClassLib", "SBClassLib\SBClassLib.csproj", "{11E9DEB9-087F-4B23-99A9-393DC98663F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{846C08C0-0D67-4048-A2E3-8C1F868D2C2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{846C08C0-0D67-4048-A2E3-8C1F868D2C2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundBoard", "SoundBoard\SoundBoard.csproj", "{E102A6BD-B904-4EDD-B120-D5E82EC245A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{846C08C0-0D67-4048-A2E3-8C1F868D2C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{846C08C0-0D67-4048-A2E3-8C1F868D2C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{846C08C0-0D67-4048-A2E3-8C1F868D2C2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E102A6BD-B904-4EDD-B120-D5E82EC245A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E102A6BD-B904-4EDD-B120-D5E82EC245A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E102A6BD-B904-4EDD-B120-D5E82EC245A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E102A6BD-B904-4EDD-B120-D5E82EC245A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

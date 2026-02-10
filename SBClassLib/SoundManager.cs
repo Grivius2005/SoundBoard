@@ -132,7 +132,7 @@ namespace SBClassLib
                 _firstSoundOut.Play();
 ;
             }
-            if (_secondOutDevice != null)
+            if (_secondOutDevice != null && _secondOutDevice.Guid != _firstOutDevice.Guid)
             {
                 using (var audioFile = new AudioFileReader(sfilePath))
                 {

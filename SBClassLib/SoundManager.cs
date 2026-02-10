@@ -7,11 +7,11 @@ namespace SBClassLib
         private static string[] s_soundExt = { "mp3", "wav" };
         private static string[] s_imgExt = { "jpg", "png" };
         private DirectSoundDeviceInfo _firstOutDevice;
-        private DirectSoundDeviceInfo? _secondOutDevice;
-        private DirectSoundOut? _firstSoundOut;
-        private DirectSoundOut? _secondSoundOut;
-        public string? DirectoryPath { get; set; }
-        public List<string?[]> Sounds { get; private set; }
+        private DirectSoundDeviceInfo _secondOutDevice;
+        private DirectSoundOut _firstSoundOut;
+        private DirectSoundOut _secondSoundOut;
+        public string DirectoryPath { get; set; }
+        public List<string[]> Sounds { get; private set; }
         //Constructors
         public SoundManager()
         {
@@ -52,7 +52,7 @@ namespace SBClassLib
                 List<string> imgFiles = allFiles.Where(file => SoundManager.s_imgExt.Contains(Path.GetExtension(file).TrimStart('.').ToLowerInvariant())).ToList();
                 foreach (string sfile in sFiles)
                 {
-                    string? imgfile = imgFiles.Where(file => Path.GetFileNameWithoutExtension(file) == Path.GetFileNameWithoutExtension(sfile)).FirstOrDefault();
+                    string imgfile = imgFiles.Where(file => Path.GetFileNameWithoutExtension(file) == Path.GetFileNameWithoutExtension(sfile)).FirstOrDefault();
                     Sounds.Add([sfile, imgfile]);
                 }
             }
@@ -98,12 +98,12 @@ namespace SBClassLib
             }
         }
 
-        public string?[] ShowCurrentDevicesDescriptions()
+        public string[] ShowCurrentDevicesDescriptions()
         {
             return [_firstOutDevice.Description, _secondOutDevice != null ? _secondOutDevice.Description : null];
         }
 
-        public DirectSoundDeviceInfo?[] GetCurrentDevices()
+        public DirectSoundDeviceInfo[] GetCurrentDevices()
         {
             return [_firstOutDevice, _secondOutDevice];
         }

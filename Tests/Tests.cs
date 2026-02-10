@@ -18,7 +18,7 @@ namespace Tests
             while (true)
             {
                 Console.Write("Wybierz indeks dźwięku: ");
-                string? inp = Console.ReadLine();
+                string inp = Console.ReadLine();
                 if(int.TryParse(inp, out int id))
                 {
                     manager.PlaySound(id);

@@ -44,10 +44,10 @@
             <ComboBox x:Name="SecondDeviceCbox" ItemsSource="{Binding SoundOutDevices, Mode=TwoWay}"  DisplayMemberPath="Description" Grid.Row="2" Grid.Column="0" Margin="5" FontSize="15" VerticalContentAlignment="Center" SelectionChanged="SecondDeviceCbox_SelectionChanged"/>
         </GroupBox>
         <Button x:Name="StopSoundBtn" Grid.Row="2" Grid.Column="1" Margin="20" Content="Stop All Sounds" FontSize="25" Click="StopSoundBtn_Click"/>
-        <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-            <StackPanel x:Name="SoundsSPanel" Orientation="Horizontal" VerticalAlignment="Top" Margin="15">
+        <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="1600" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
+            <WrapPanel x:Name="SoundsWPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="15">
                 
-            </StackPanel>
+            </WrapPanel>
         </ScrollViewer>
 
     </Grid>

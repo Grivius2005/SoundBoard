@@ -24,7 +24,7 @@ namespace SoundBoard
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         private SoundManager _manager;
         public string DirectoryPath { get; set; }
         public ObservableCollection<DirectSoundDeviceInfo> SoundOutDevices { get; set; }
@@ -45,15 +45,15 @@ namespace SoundBoard
         private void LoadDevices()
         {
             SoundOutDevices = new ObservableCollection<DirectSoundDeviceInfo>(SoundManager.GetOutDevices());
-            DirectSoundDeviceInfo?[] devices = _manager.GetCurrentDevices();
+            DirectSoundDeviceInfo[] devices = _manager.GetCurrentDevices();
             FirstDeviceCbox.SelectedItem = devices[0] != null ? SoundOutDevices.FirstOrDefault(d => d.Guid == devices[0]!.Guid) : null;
             SecondDeviceCbox.SelectedItem = devices[1] != null ? SoundOutDevices.FirstOrDefault(d => d.Guid == devices[1]!.Guid) : null;
         }
 
         private void LoadSounds()
         {
-            SoundsSPanel.Children.Clear();
-            List<string?[]> sounds = _manager.Sounds;
+            SoundsWPanel.Children.Clear();
+            List<string[]> sounds = _manager.Sounds;
             for(int i=0; i < sounds.Count; i++)
             {
 
@@ -90,7 +90,7 @@ namespace SoundBoard
                 }
 
                 button.Click += (object sender, RoutedEventArgs arg) => { _manager.PlaySound(icopy); };
-                SoundsSPanel.Children.Add(button);
+                SoundsWPanel.Children.Add(button);
             }
         }
 
@@ -135,11 +135,18 @@ namespace SoundBoard
         }
 
 
-        protected void OnPropertyChanged([CallerMemberName] string? name = null)
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+
+        private static ControlTemplate RemoveHoverEfect()
+        {
+
+
+            return null;
+        }
 
     }
 }

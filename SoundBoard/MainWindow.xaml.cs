@@ -32,13 +32,54 @@ namespace SoundBoard
 
         public MainWindow()
         {
-            DirectoryPath = AppContext.BaseDirectory + @"TestDir";
+            DirectoryPath = Properties.Settings.Default.DirectoryPath;
             SoundOutDevices = new();
-            _manager = new SoundManager(DirectoryPath);
+            if (DirectoryPath == "" || DirectoryPath == null)
+            {
+                _manager = new SoundManager();
+            }
+            else
+            {
+                try
+                {
+                    _manager = new SoundManager(DirectoryPath);
+                }
+                catch (Exception ex)
+                {
+                    _manager = new SoundManager();
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            string outDeviceGuid = Properties.Settings.Default.FirstOutDevice;
+            if (outDeviceGuid != "" && outDeviceGuid != null)
+            {
+                try
+                {
+                    _manager.ChangeDevice(Guid.Parse(outDeviceGuid));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            outDeviceGuid = Properties.Settings.Default.SecondOutDevice;
+            if (outDeviceGuid != "" && outDeviceGuid != null)
+            {
+                try
+                {
+                    _manager.ChangeDevice(Guid.Parse(outDeviceGuid), true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
             InitializeComponent();
-            DataContext = this;
             LoadDevices();
             LoadSounds();
+            DataContext = this;
+
         }
 
 
@@ -91,8 +132,8 @@ namespace SoundBoard
                 else
                 {
                     string sname = System.IO.Path.GetFileNameWithoutExtension(sounds[i][0]);
-                    button.Content = new TextBlock 
-                    { 
+                    button.Content = new TextBlock
+                    {
                         Text = sname,
                         TextWrapping = TextWrapping.Wrap,
                         TextAlignment = TextAlignment.Center,
@@ -114,9 +155,13 @@ namespace SoundBoard
             {
                 DirectoryPath = ofd.FolderName;
                 _manager.ChangeDirectory(DirectoryPath);
+                OnPropertyChanged("DirectoryPath");
+                LoadSounds();
+                Properties.Settings.Default.DirectoryPath = DirectoryPath;
+                Properties.Settings.Default.Save();
+
             }
-            OnPropertyChanged("DirectoryPath");
-            LoadSounds();
+
         }
 
         private void RefreshDevicesBtn_Click(object sender, RoutedEventArgs e)
@@ -133,8 +178,13 @@ namespace SoundBoard
         {
             if (FirstDeviceCbox.SelectedItem != null)
             {
-                _manager.ChangeDevice(((DirectSoundDeviceInfo)FirstDeviceCbox.SelectedItem).Guid);
+                _manager.StopAll();
+                Guid deviceGuid = ((DirectSoundDeviceInfo)FirstDeviceCbox.SelectedItem).Guid;
+                _manager.ChangeDevice(deviceGuid);
+                Properties.Settings.Default.FirstOutDevice = deviceGuid.ToString();
+                Properties.Settings.Default.Save();
             }
+
 
         }
 
@@ -142,7 +192,11 @@ namespace SoundBoard
         {
             if (SecondDeviceCbox.SelectedItem != null)
             {
-                _manager.ChangeDevice(((DirectSoundDeviceInfo)SecondDeviceCbox.SelectedItem).Guid, true);
+                _manager.StopAll();
+                Guid deviceGuid = ((DirectSoundDeviceInfo)SecondDeviceCbox.SelectedItem).Guid;
+                _manager.ChangeDevice(deviceGuid, true);
+                Properties.Settings.Default.SecondOutDevice = deviceGuid.ToString();
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -153,7 +207,7 @@ namespace SoundBoard
         }
 
 
-        private ControlTemplate  SoundBtnTemplate()
+        private ControlTemplate SoundBtnTemplate()
         {
             var template = new ControlTemplate(typeof(Button));
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.Win32;
-using NAudio.Wave;
-using SBClassLib;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -16,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Microsoft.Win32;
+using NAudio.Wave;
+using SBClassLib;
 
 namespace SoundBoard
 {
@@ -121,10 +120,10 @@ namespace SoundBoard
                         bitmap.EndInit();
                         bitmap.Freeze();
 
-                        Dispatcher.Invoke(() =>
-                        {
-                            var img = new ImageBrush(bitmap);
-                            button.Background = img;
+                        Dispatcher.Invoke(() => 
+                        { 
+                            var img = new  ImageBrush(bitmap);
+                            button.Background = img; 
                         });
 
                     });
@@ -151,7 +150,7 @@ namespace SoundBoard
         {
             OpenFolderDialog ofd = new OpenFolderDialog();
             ofd.InitialDirectory = DirectoryPath;
-            if (ofd.ShowDialog() == true)
+            if(ofd.ShowDialog() == true)
             {
                 DirectoryPath = ofd.FolderName;
                 _manager.ChangeDirectory(DirectoryPath);
@@ -190,7 +189,7 @@ namespace SoundBoard
 
         private void SecondDeviceCbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SecondDeviceCbox.SelectedItem != null)
+            if(SecondDeviceCbox.SelectedItem != null)
             {
                 _manager.StopAll();
                 Guid deviceGuid = ((DirectSoundDeviceInfo)SecondDeviceCbox.SelectedItem).Guid;

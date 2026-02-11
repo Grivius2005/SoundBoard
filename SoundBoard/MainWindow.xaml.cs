@@ -1,7 +1,4 @@
-﻿using Microsoft.Win32;
-using NAudio.Wave;
-using SBClassLib;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -16,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Microsoft.Win32;
+using NAudio.Wave;
+using SBClassLib;
 
 namespace SoundBoard
 {
@@ -36,7 +35,7 @@ namespace SoundBoard
             SoundOutDevices = new();
             _manager = new SoundManager(DirectoryPath);
             InitializeComponent();
-            DataContext = this;
+            this.DataContext = this;
             LoadDevices();
             LoadSounds();
         }
@@ -55,8 +54,7 @@ namespace SoundBoard
         {
             SoundsWPanel.Children.Clear();
             List<string[]> sounds = _manager.Sounds;
-            ControlTemplate btnTemplate = SoundBtnTemplate();
-            for (int i = 0; i < sounds.Count; i++)
+            for(int i=0; i < sounds.Count; i++)
             {
 
                 int icopy = i;
@@ -65,8 +63,6 @@ namespace SoundBoard
                     Width = 150,
                     Height = 150,
                     Margin = new Thickness(15),
-                    BorderBrush = new SolidColorBrush(Colors.White),
-                    BorderThickness = new Thickness(2),
                 };
                 if (sounds[i][1] != null)
                 {
@@ -80,28 +76,20 @@ namespace SoundBoard
                         bitmap.EndInit();
                         bitmap.Freeze();
 
-                        Dispatcher.Invoke(() =>
-                        {
-                            var img = new ImageBrush(bitmap);
-                            button.Background = img;
+                        Dispatcher.Invoke(() => 
+                        { 
+                            var img = new  ImageBrush(bitmap);
+                            button.Background = img; 
                         });
 
                     });
                 }
                 else
                 {
-                    string sname = System.IO.Path.GetFileNameWithoutExtension(sounds[i][0]);
-                    button.Content = new TextBlock 
-                    { 
-                        Text = sname,
-                        TextWrapping = TextWrapping.Wrap,
-                        TextAlignment = TextAlignment.Center,
-                    };
+                    button.Content = System.IO.Path.GetFileNameWithoutExtension(sounds[i][0]);
                 }
 
                 button.Click += (object sender, RoutedEventArgs arg) => { _manager.PlaySound(icopy); };
-                button.Template = btnTemplate;
-                button.Cursor = Cursors.Hand;
                 SoundsWPanel.Children.Add(button);
             }
         }
@@ -110,7 +98,7 @@ namespace SoundBoard
         {
             OpenFolderDialog ofd = new OpenFolderDialog();
             ofd.InitialDirectory = DirectoryPath;
-            if (ofd.ShowDialog() == true)
+            if(ofd.ShowDialog() == true)
             {
                 DirectoryPath = ofd.FolderName;
                 _manager.ChangeDirectory(DirectoryPath);
@@ -140,7 +128,7 @@ namespace SoundBoard
 
         private void SecondDeviceCbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SecondDeviceCbox.SelectedItem != null)
+            if(SecondDeviceCbox.SelectedItem != null)
             {
                 _manager.ChangeDevice(((DirectSoundDeviceInfo)SecondDeviceCbox.SelectedItem).Guid, true);
             }
@@ -153,24 +141,11 @@ namespace SoundBoard
         }
 
 
-        private ControlTemplate  SoundBtnTemplate()
+        private static ControlTemplate RemoveHoverEfect()
         {
-            var template = new ControlTemplate(typeof(Button));
 
-            var border = new FrameworkElementFactory(typeof(Border));
-            border.SetValue(Border.BackgroundProperty, new TemplateBindingExtension(Button.BackgroundProperty));
-            border.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(Button.BorderBrushProperty));
-            border.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(Button.BorderThicknessProperty));
 
-            var content = new FrameworkElementFactory(typeof(ContentPresenter));
-            content.SetValue(ContentPresenter.HorizontalAlignmentProperty, HorizontalAlignment.Center);
-            content.SetValue(ContentPresenter.VerticalAlignmentProperty, VerticalAlignment.Center);
-
-            border.AppendChild(content);
-            template.VisualTree = border;
-
-            return template;
-
+            return null;
         }
 
     }

@@ -31,6 +31,22 @@ namespace SoundBoard
 
         public MainWindow()
         {
+            Width = 1600;
+            Height = 900;
+            string sizeStr = Properties.Settings.Default.WindowSize;
+            if(sizeStr != "" && sizeStr != null)
+            {
+                double[] size = sizeStr.Split("x").Select(double.Parse).ToArray();
+                Width = size[0];
+                Height = size[1];
+            }
+            else
+            {
+                Window_SizeChanged(this, null);
+            }
+            
+
+
             DirectoryPath = Properties.Settings.Default.DirectoryPath;
             SoundOutDevices = new();
             if (DirectoryPath == "" || DirectoryPath == null)
@@ -226,5 +242,11 @@ namespace SoundBoard
 
         }
 
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            string size = $"{Width}x{Height}";
+            Properties.Settings.Default.WindowSize = size;
+            Properties.Settings.Default.Save();
+        }
     }
 }
